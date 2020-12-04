@@ -1,11 +1,17 @@
-from craft_text_detector import Craft
+import easyocr
+import csv
+import os
+import matplotlib.pyplot as plt
 
-image_path = 'images/download.png'
-output_dir = 'outputs/'
+PATH = 'image_for_detection/image.jpeg'
+reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
+result = reader.readtext(PATH, detail=0)
 
-craft = Craft(output_dir=output_dir, crop_type="poly", cuda=False)
+print(result)
 
-prediction_result = craft.detect_text(image_path)
+PATH = 'output.csv'
+file = open(PATH, 'w')
+with file:
+    writer = csv.writer(file)
+    writer.writerow(result)
 
-craft.unload_craftnet_model()
-craft.unload_refinenet_model()
