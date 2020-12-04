@@ -1,6 +1,6 @@
 from craft_text_detector import Craft
 
-image_path = 'img/download.png'
+image_path = 'images/download.png'
 output_dir = 'outputs/'
 
 craft = Craft(output_dir=output_dir, crop_type="poly", cuda=False)
