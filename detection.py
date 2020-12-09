@@ -3,15 +3,15 @@ import csv
 import os
 import matplotlib.pyplot as plt
 
-PATH = 'image_for_detection/image.jpeg'
-reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
-result = reader.readtext(PATH, detail=0)
+def detectImage(PATH):
+    reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
+    result = reader.readtext(PATH, detail=0)
 
-print(result)
+    print(result)
 
-PATH = 'output.csv'
-file = open(PATH, 'w')
-with file:
-    writer = csv.writer(file)
-    writer.writerow(result)
-
+    PATH = 'output.csv'
+    file = open(PATH, 'w')
+    with file:
+        writer = csv.writer(file)
+        writer.writerow(result)
+detectImage()
