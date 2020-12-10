@@ -1,10 +1,11 @@
 import 'dart:io';
+import './navbar.dart';
+import './notes.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/gestures.dart';
-import './navbar.dart';
 
 Future<Null> main() async {
   runApp(MaterialApp(home: LandingScreen()));
@@ -31,7 +32,7 @@ class _LandingScreenState extends State<LandingScreen> {
     this.setState(() {
       imageFile = File(picture.path);
     });
-    Navigator.of(context);
+    Navigator.of(context).pop();
   }
 
   _checkImage() {
@@ -46,24 +47,26 @@ class _LandingScreenState extends State<LandingScreen> {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text('Select Upload Method'),
-              content: SingleChildScrollView(
-                  child: ListBody(children: <Widget>[
-                GestureDetector(
-                  child: Text('Gallery'),
-                  onTap: () {
+          return CupertinoActionSheet(
+            title: Text('Choose Upload Method'),
+            actions: [
+              CupertinoActionSheetAction(
+                  onPressed: () {
                     _openGallery();
                   },
-                ),
-                Padding(padding: EdgeInsets.all(10.0)),
-                GestureDetector(
-                  child: Text('Camera'),
-                  onTap: () {
+                  child: Text('Gallery')),
+              CupertinoActionSheetAction(
+                  onPressed: () {
                     _openCamera();
                   },
-                )
-              ])));
+                  child: Text('Camera')),
+            ],
+            cancelButton: CupertinoActionSheetAction(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+          );
         });
   }
 

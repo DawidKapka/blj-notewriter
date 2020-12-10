@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './notes.dart';
 
 class NavBar extends StatelessWidget {
   @override
@@ -7,15 +8,26 @@ class NavBar extends StatelessWidget {
     return Drawer(
         child: ListView(children: [
       DrawerHeader(
-        
-        child: Text('Navigation')),
+          margin: EdgeInsets.all(8.0),
+          child: Text(
+            'Navigation',
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+          )),
       ListTile(
-        trailing: Icon(Icons.camera_enhance),
-        title: Text('Camera'),
-      ),
+          trailing: Icon(Icons.camera_enhance),
+          title: Text('Select Photo'),
+          onTap: () {
+            Navigator.pop(context);
+          }),
       ListTile(
-        trailing: Icon(Icons.book) , 
-        title: Text('My Notes')),
+          trailing: Icon(Icons.book),
+          title: Text('My Notes'),
+          onTap: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => new Notes())
+            );
+          }),
     ]));
   }
 }
