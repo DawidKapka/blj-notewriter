@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notewriter_app/main.dart';
 import './notes.dart';
 
 class NavBar extends StatelessWidget {
@@ -17,7 +18,10 @@ class NavBar extends StatelessWidget {
           trailing: Icon(Icons.camera_enhance),
           title: Text('Select Photo'),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context, 
+              new MaterialPageRoute(builder: (context) => new LandingScreen())
+            );
           }),
       ListTile(
           trailing: Icon(Icons.book),

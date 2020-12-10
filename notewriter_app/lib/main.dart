@@ -32,19 +32,19 @@ class _LandingScreenState extends State<LandingScreen> {
     this.setState(() {
       imageFile = File(picture.path);
     });
-    Navigator.of(context).pop();
+    Navigator.of(context);
   }
 
   _checkImage() {
     if (imageFile == null) {
       return Text('No Image Selected');
     } else {
-      return Image.file(imageFile, width: 400, height: 400);
+      return Image.file(imageFile, height: 500);
     }
   }
 
   Future<void> _showChoiceDialog(BuildContext context) {
-    return showDialog(
+    return showCupertinoModalPopup(
         context: context,
         builder: (BuildContext context) {
           return CupertinoActionSheet(
@@ -52,14 +52,16 @@ class _LandingScreenState extends State<LandingScreen> {
             actions: [
               CupertinoActionSheetAction(
                   onPressed: () {
-                    _openGallery();
-                  },
-                  child: Text('Gallery')),
-              CupertinoActionSheetAction(
-                  onPressed: () {
                     _openCamera();
+                    Navigator.of(context).pop();
                   },
                   child: Text('Camera')),
+              CupertinoActionSheetAction(
+                  onPressed: () {
+                    _openGallery();
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Gallery')),
             ],
             cancelButton: CupertinoActionSheetAction(
                 child: Text('Cancel'),
@@ -81,11 +83,15 @@ class _LandingScreenState extends State<LandingScreen> {
                 child: Column(children: <Widget>[
           _checkImage(),
         ]))),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: Container(
+          height: 100.0,
+          child: FittedBox(
+            child: FloatingActionButton(
             child: Icon(Icons.camera_enhance),
             onPressed: () {
               _showChoiceDialog(context);
-            }),
+            }))),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
