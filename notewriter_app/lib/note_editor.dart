@@ -12,11 +12,13 @@ class _EditorState extends State<Editor> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: Text('Note 1')
-      ),
-      drawer: NavBar(),
-      body: Container()
-    );
+        appBar: new AppBar(title: Text('New Note')),
+        drawer: NavBar(),
+        body: Container(
+          child: GestureDetector(
+            child: Text('text'),
+            onTap: () {
+          return CupertinoTextField();
+        })));
   }
 }

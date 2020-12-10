@@ -14,32 +14,8 @@ class Notes extends StatefulWidget {
 class _NotesState extends State<Notes> {
   List<Widget> _notes = [];
   TextEditingController nameController = new TextEditingController();
+  String title;
   @override
-  Future<void> _nameNote(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-              actions: [
-                CupertinoButton(
-                    child: Icon(Icons.done),
-                    onPressed: () {
-                      setState(() {
-                        _notes.add(Text(nameController.text));
-                        Navigator.of(context).pop();
-                      });
-                    })
-              ],
-              title: Text('Name: '),
-              content: CupertinoTextField(
-                  autocorrect: true,
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.blue,
-                      ),
-                      borderRadius: BorderRadius.circular(8))));
-        });
-  }
 
   Center _isNotesEmpty(BuildContext context) {
     if (_notes.length == 0) {
@@ -65,9 +41,13 @@ class _NotesState extends State<Notes> {
                   color: Colors.blue,
                   disabledColor: Colors.grey[400],
                   onPressed: () {
-                    _nameNote(context);
+                      setState(() {
+                        _notes.add(Text(nameController.text));
+                        title = _notes.toString();
+                        Navigator.of(context).pop();
+                      });
                   })),
-          NotesList(_notes, nameController.text),
+          NotesList(_notes),
           _isNotesEmpty(context)
         ])));
   }

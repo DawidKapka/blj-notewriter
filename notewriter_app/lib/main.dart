@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/gestures.dart';
 
 Future<Null> main() async {
-  runApp(MaterialApp(home: LandingScreen()));
+  runApp(MaterialApp(home: Notes()));
 }
 
 class LandingScreen extends StatefulWidget {
