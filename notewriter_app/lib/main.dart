@@ -37,9 +37,25 @@ class _LandingScreenState extends State<LandingScreen> {
 
   _checkImage() {
     if (imageFile == null) {
-      return Text('No Image Selected');
+      return Container(
+        margin: EdgeInsets.all(10.0),
+        child: Text('No Image Selected'));
     } else {
       return Image.file(imageFile, height: 500);
+    }
+  }
+
+  _isImageLoaded() {
+    if (imageFile != null) {
+      return Container(
+          margin: EdgeInsets.all(10.0),
+          child: CupertinoButton(
+              color: Colors.blue,
+              disabledColor: Colors.grey[400],
+              child: Text('Detect Text'),
+              onPressed: null));
+    } else {
+      return Text('');
     }
   }
 
@@ -80,17 +96,16 @@ class _LandingScreenState extends State<LandingScreen> {
         drawer: NavBar(),
         body: Container(
             child: Center(
-                child: Column(children: <Widget>[
-          _checkImage(),
-        ]))),
+                child: Column(
+                    children: <Widget>[_checkImage(), _isImageLoaded()]))),
         floatingActionButton: Container(
-          height: 100.0,
-          child: FittedBox(
-            child: FloatingActionButton(
-            child: Icon(Icons.camera_enhance),
-            onPressed: () {
-              _showChoiceDialog(context);
-            }))),
+            height: 100.0,
+            child: FittedBox(
+                child: FloatingActionButton(
+                    child: Icon(Icons.perm_media_outlined),
+                    onPressed: () {
+                      _showChoiceDialog(context);
+                    }))),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );

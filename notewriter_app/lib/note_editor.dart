@@ -9,16 +9,17 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
+  int i = 1;
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(title: Text('New Note')),
-        drawer: NavBar(),
-        body: Container(
-          child: GestureDetector(
-            child: Text('text'),
-            onTap: () {
-          return CupertinoTextField();
-        })));
+        body: Scrollbar(
+            child: Container(
+                height: 800,
+                child: CupertinoTextField(
+                  autocorrect: true,
+                  autofocus: true,
+                ))));
   }
 }

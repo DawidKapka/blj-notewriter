@@ -42,9 +42,7 @@ class _NotesState extends State<Notes> {
                   disabledColor: Colors.grey[400],
                   onPressed: () {
                       setState(() {
-                        _notes.add(Text(nameController.text));
-                        title = _notes.toString();
-                        Navigator.of(context).pop();
+                        _notes.add(Text('New Note'));
                       });
                   })),
           NotesList(_notes),
