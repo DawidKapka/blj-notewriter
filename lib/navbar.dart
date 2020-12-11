@@ -25,7 +25,7 @@ class NavBar extends StatelessWidget {
           }),
       ListTile(
           trailing: Icon(Icons.book),
-          title: Text('My Notes'),
+          title: Text('My Notess'),
           onTap: () {
             Navigator.push(
               context,
