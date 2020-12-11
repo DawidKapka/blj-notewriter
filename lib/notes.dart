@@ -37,7 +37,7 @@ class _NotesState extends State<Notes> {
               margin: EdgeInsets.all(8.0),
               child: CupertinoButton(
                   padding: EdgeInsets.all(20.0),
-                  child: Text('New Note'),
+                  child: Icon(Icons.note_add_outlined),
                   color: Colors.blue,
                   disabledColor: Colors.grey[400],
                   onPressed: () {

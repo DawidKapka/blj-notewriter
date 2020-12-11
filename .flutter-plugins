@@ -1,3 +1,10 @@
 # This is a generated file; do not edit or check into version control.
 flutter_plugin_android_lifecycle=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11/
 image_picker=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.6.7+14/
+path_provider_linux=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2/
+path_provider_windows=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-0.0.4+3/
+shared_preferences=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4/
+shared_preferences_linux=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-0.0.2+4/
+shared_preferences_macos=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+11/
+shared_preferences_web=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+7/
+shared_preferences_windows=/Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-0.0.1+3/

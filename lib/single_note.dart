@@ -4,14 +4,13 @@ import 'package:flutter/gestures.dart';
 import 'package:notewriter_app/note_editor.dart';
 
 class SingleNote extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
         title: GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new Editor()));
+                  new MaterialPageRoute(builder: (context) => new Editor('')));
             },
             child: Container(
                 padding: EdgeInsets.all(20.0),

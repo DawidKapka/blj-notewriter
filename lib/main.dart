@@ -1,14 +1,18 @@
 import 'dart:io';
+import 'package:notewriter_app/note_editor.dart';
+
 import './navbar.dart';
 import './notes.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/gestures.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 Future<Null> main() async {
-  runApp(MaterialApp(home: Notes()));
+  runApp(MaterialApp(home: LandingScreen()));
 }
 
 class LandingScreen extends StatefulWidget {
@@ -38,11 +42,45 @@ class _LandingScreenState extends State<LandingScreen> {
   _checkImage() {
     if (imageFile == null) {
       return Container(
-        margin: EdgeInsets.all(10.0),
-        child: Text('No Image Selected'));
+          margin: EdgeInsets.all(10.0), child: Text('No Image Selected'));
     } else {
       return Image.file(imageFile, height: 500);
     }
+  }
+
+  String url = "http://127.0.0.1:5000/result";
+  String _response = '';
+
+  Future<void> _getResponse() async {
+    var response = await http.get(Uri.encodeFull(url));
+    setState(() {
+      _response = response.body.toString();
+    });
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Detected Text:'),
+            content: Text(_response),
+            actions: [
+              CupertinoDialogAction(
+                  isDestructiveAction: true,
+                  child: Text('Delete'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  }),
+              CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child: Text('Keep'),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => new Editor(_response)));
+                  })
+            ],
+          );
+        });
   }
 
   _isImageLoaded() {
@@ -53,7 +91,9 @@ class _LandingScreenState extends State<LandingScreen> {
               color: Colors.blue,
               disabledColor: Colors.grey[400],
               child: Text('Detect Text'),
-              onPressed: null));
+              onPressed: () {
+                _getResponse();
+              }));
     } else {
       return Text('');
     }

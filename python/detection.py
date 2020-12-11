@@ -1,17 +1,29 @@
 import easyocr
 import csv
 import os
-import matplotlib.pyplot as plt
+from flask import *
 
-def detectImage(PATH):
+
+app = Flask(__name__)
+
+@app.route('/result')
+def detectImage():
+    PIC_PATH = 'image_for_detection/image.jpg'
     reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
-    result = reader.readtext(PATH, detail=0)
+    result = reader.readtext(PIC_PATH, detail=0)
 
     print(result)
 
-    PATH = 'output.csv'
-    file = open(PATH, 'w')
-    with file:
-        writer = csv.writer(file)
-        writer.writerow(result)
-detectImage()
+    #PATH = 'output.csv'
+    #file = open(PATH, 'w')
+    #with file:
+     #   writer = csv.writer(file)
+      #  writer.writerow(result)
+
+    result_string = ''
+    for word in result:
+       result_string += word + ' '
+
+    return result_string
+app.run()
+
