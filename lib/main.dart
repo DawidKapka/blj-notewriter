@@ -1,15 +1,15 @@
-import 'dart:io';
-import 'package:notewriter_app/note_editor.dart';
+import 'dart:developer';
 
+import './note_editor.dart';
 import './navbar.dart';
 import './notes.dart';
 
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:loader_overlay/loader_overlay.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<Null> main() async {
   runApp(MaterialApp(home: LandingScreen()));
@@ -48,10 +48,33 @@ class _LandingScreenState extends State<LandingScreen> {
     }
   }
 
-  String url = "http://127.0.0.1:5000/result";
-  String _response = '';
+  String url = '';
+  _getUrl() {
+    if (Platform.isAndroid) {
+      url = "http://10.0.2.2:5000/result";
+    } else {
+      url = "http://127.0.0.1:5000/result";
+    }
+  }
+
+  Future<String> _getFilePath() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+    String filePath = '$appDocumentsPath/text.txt';
+    return filePath;
+  }
+
+  void _saveFile() async {
+    File file = File(await _getFilePath());
+    file.writeAsString(imageFile.toString());
+
+  }
+
+  String _response = null;
 
   Future<void> _getResponse() async {
+    _saveFile();
+    _getUrl();
     var response = await http.get(Uri.encodeFull(url));
     setState(() {
       _response = response.body.toString();

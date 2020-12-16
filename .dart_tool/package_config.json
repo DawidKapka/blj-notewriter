@@ -38,10 +38,40 @@
       "languageVersion": "2.10"
     },
     {
+      "name": "convert",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/convert-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "1.17"
+    },
+    {
+      "name": "crypto",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-2.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "csv",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/csv-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "device_info",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/device_info-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "device_info_platform_interface",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_platform_interface-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
     },
     {
       "name": "fake_async",
@@ -80,12 +110,6 @@
       "languageVersion": "2.2"
     },
     {
-      "name": "flutter_web_plugins",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/packages/flutter_web_plugins",
-      "packageUri": "lib/",
-      "languageVersion": "2.0"
-    },
-    {
       "name": "http",
       "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/http-0.12.2",
       "packageUri": "lib/",
@@ -116,10 +140,10 @@
       "languageVersion": "2.5"
     },
     {
-      "name": "loader_overlay",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/loader_overlay-1.1.1",
+      "name": "logging",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/logging-0.11.4",
       "packageUri": "lib/",
-      "languageVersion": "2.6"
+      "languageVersion": "2.0"
     },
     {
       "name": "matcher",
@@ -134,14 +158,32 @@
       "languageVersion": "2.10"
     },
     {
+      "name": "mysql1",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/mysql1-0.17.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "path",
       "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0-nullsafety.1",
       "packageUri": "lib/",
       "languageVersion": "2.10"
     },
     {
+      "name": "path_provider",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.24",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "path_provider_linux",
       "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
+      "name": "path_provider_macos",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+6",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     },
@@ -176,46 +218,16 @@
       "languageVersion": "2.1"
     },
     {
-      "name": "process",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/process-3.0.13",
+      "name": "pool",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/pool-1.4.0",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
     {
-      "name": "shared_preferences",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.12+4",
+      "name": "process",
+      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/process-3.0.13",
       "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
-      "name": "shared_preferences_linux",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_linux-0.0.2+4",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
-      "name": "shared_preferences_macos",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+11",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
-      "name": "shared_preferences_platform_interface",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_platform_interface-1.0.4",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
-      "name": "shared_preferences_web",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+7",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
-      "name": "shared_preferences_windows",
-      "rootUri": "file:///Users/dawidkapka/Flutter/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_windows-0.0.1+3",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
+      "languageVersion": "2.0"
     },
     {
       "name": "sky_engine",
@@ -290,7 +302,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-12-11T13:50:51.718635Z",
+  "generated": "2020-12-16T13:20:33.822540Z",
   "generator": "pub",
   "generatorVersion": "2.10.4"
 }

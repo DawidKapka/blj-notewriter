@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:notewriter_app/note_editor.dart';
 
 class SingleNote extends StatelessWidget {
+  final String nameNote;
+  SingleNote(this.nameNote);
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -19,8 +21,7 @@ class SingleNote extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.lightBlue[200],
                     border: Border.all(width: 2.0, color: Colors.blue[200])),
-                child: Text('New Note', style: TextStyle(
-                  fontWeight: FontWeight.bold
-                )))));
+                child: Text(nameNote,
+                    style: TextStyle(fontWeight: FontWeight.bold)))));
   }
 }

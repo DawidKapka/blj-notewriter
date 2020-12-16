@@ -2,7 +2,15 @@ import easyocr
 import csv
 import os
 from flask import *
+import mysql.connector
 
+mydb = mysql.connector.connect(
+  host="mysql2.webland.ch",
+  user="d041e_dakapka",
+  password="12345_Db!!!",
+  database="d041e_dakapka"
+)
+mycursor = mydb.cursor()
 
 app = Flask(__name__)
 
@@ -20,10 +28,13 @@ def detectImage():
      #   writer = csv.writer(file)
       #  writer.writerow(result)
 
+
     result_string = ''
     for word in result:
        result_string += word + ' '
 
+    print(result_string)
     return result_string
+
 app.run()
 
