@@ -28,8 +28,8 @@ Future<void> _getDeviceID() async {
 }
 
 class _NotesState extends State<Notes> {
-  List<Widget> _notes = [];
-  List<Widget> noteName = [];
+  List<String> _notes = [];
+  List<String> noteName = [];
   Future<List> _getNotes() async {
     var settings = new ConnectionSettings(
         host: 'mysql2.webland.ch',
@@ -43,10 +43,9 @@ class _NotesState extends State<Notes> {
         .query('SELECT * FROM notes WHERE device_id = ?', ['$deviceID']);
     for (var row in selectNotes) {
       setState(() {
-        _notes.add(Text(row[2].toString()));
-        noteName.add(Text(row[2].toString()));
+        _notes.add(row[2].toString());
+        noteName.add(row[2]);
       });
-      print(_notes);
     }
   }
 
@@ -82,10 +81,10 @@ class _NotesState extends State<Notes> {
                   disabledColor: Colors.grey[400],
                   onPressed: () {
                     setState(() {
-                      _notes.add(Text('New Note'));
+                      _notes.insert(0, 'New Note');
                     });
                   })),
-          NotesList(_notes, noteName),
+          NotesList(_notes),
           _isNotesEmpty(context)
         ])));
   }

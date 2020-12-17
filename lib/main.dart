@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import './note_editor.dart';
 import './navbar.dart';
 import './notes.dart';
@@ -10,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 
 Future<Null> main() async {
   runApp(MaterialApp(home: LandingScreen()));
@@ -22,6 +22,7 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> {
   File imageFile;
+  Dio dio = new Dio();
 
   _openGallery() async {
     var picture = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -44,37 +45,29 @@ class _LandingScreenState extends State<LandingScreen> {
       return Container(
           margin: EdgeInsets.all(10.0), child: Text('No Image Selected'));
     } else {
+      _uploadImage(imageFile);
       return Image.file(imageFile, height: 500);
     }
   }
 
-  String url = '';
-  _getUrl() {
-    if (Platform.isAndroid) {
-      url = "http://10.0.2.2:5000/result";
-    } else {
-      url = "http://127.0.0.1:5000/result";
-    }
-  }
+  String url = 'http://127.0.0.1:5000';
 
-  Future<String> _getFilePath() async {
-    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
-    String appDocumentsPath = appDocumentsDirectory.path;
-    String filePath = '$appDocumentsPath/text.txt';
-    return filePath;
-  }
+  Future<void> _uploadImage(File imageFile) async {
+    Uri filePath = Uri.parse(imageFile.path);
+    var uri = Uri.parse(url);
+    var request = new http.MultipartRequest("POST", uri);
+    request.files.add(new http.MultipartFile.fromBytes(
+        'file', await File.fromUri(filePath).readAsBytes(),
+        contentType: new MediaType('image', 'jpg')));
 
-  void _saveFile() async {
-    File file = File(await _getFilePath());
-    file.writeAsString(imageFile.toString());
-
+    request.send().then((response) {
+      if (response.statusCode == 200) print("Uploaded!");
+    });
   }
 
   String _response = null;
 
   Future<void> _getResponse() async {
-    _saveFile();
-    _getUrl();
     var response = await http.get(Uri.encodeFull(url));
     setState(() {
       _response = response.body.toString();
@@ -99,7 +92,8 @@ class _LandingScreenState extends State<LandingScreen> {
                     Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (context) => new Editor(_response)));
+                            builder: (context) =>
+                                new Editor(_response, 'New Note')));
                   })
             ],
           );

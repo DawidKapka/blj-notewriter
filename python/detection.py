@@ -1,33 +1,22 @@
 import easyocr
-import csv
-import os
-from flask import *
-import mysql.connector
-
-mydb = mysql.connector.connect(
-  host="mysql2.webland.ch",
-  user="d041e_dakapka",
-  password="12345_Db!!!",
-  database="d041e_dakapka"
-)
-mycursor = mydb.cursor()
+from flask import Flask
+import requests
 
 app = Flask(__name__)
 
 @app.route('/result')
 def detectImage():
     PIC_PATH = 'image_for_detection/image.jpg'
+
+    #response = requests.get("http://139.162.146.78")
+    #file = open(PIC_PATH, "wb")
+    #file.write(response.content)
+    #file.close()
+
     reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
     result = reader.readtext(PIC_PATH, detail=0)
 
     print(result)
-
-    #PATH = 'output.csv'
-    #file = open(PATH, 'w')
-    #with file:
-     #   writer = csv.writer(file)
-      #  writer.writerow(result)
-
 
     result_string = ''
     for word in result:

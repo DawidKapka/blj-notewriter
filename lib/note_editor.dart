@@ -9,14 +9,29 @@ import './notes.dart';
 
 class Editor extends StatefulWidget {
   final String _response;
-  Editor(this._response);
+  String nameTitle;
+  Editor(this._response, this.nameTitle);
   @override
-  _EditorState createState() => _EditorState(_response);
+  _EditorState createState() => _EditorState(_response, nameTitle);
 }
 
 class _EditorState extends State<Editor> {
-  final String _response;
-  _EditorState(this._response);
+  String _response = '';
+  String nameTitle;
+  _EditorState(this._response, this.nameTitle);
+
+  void _deleteNote(String nameTitle) async {
+    var settings = new ConnectionSettings(
+        host: 'mysql2.webland.ch',
+        user: 'd041e_dakapka',
+        password: '12345_Db!!!',
+        db: 'd041e_dakapka');
+    _getDeviceID();
+    var conn = await MySqlConnection.connect(settings);
+    var deleteNote = await conn.query(
+        'DELETE FROM notes WHERE device_id = ? AND title = ?',
+        ['$deviceID', '$nameTitle']);
+  }
 
   final nameController = TextEditingController();
   final noteController = TextEditingController();
@@ -76,10 +91,10 @@ class _EditorState extends State<Editor> {
   }
 
   String _nameCheck() {
-    if (nameString == '') {
+    if (nameString == '' && nameTitle == '') {
       return 'New Note';
     } else {
-      return nameString;
+      return nameTitle;
     }
   }
 
@@ -122,9 +137,9 @@ class _EditorState extends State<Editor> {
 
                                   Navigator.of(context).pop();
                                   Navigator.push(
-                                    context, 
-                                    new MaterialPageRoute(builder: (context) => new Notes())
-                                  );
+                                      context,
+                                      new MaterialPageRoute(
+                                          builder: (context) => new Notes()));
                                 },
                                 child: Text('Save'),
                                 isDefaultAction: true,
@@ -139,10 +154,34 @@ class _EditorState extends State<Editor> {
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      new MaterialPageRoute(builder: (context) => new Notes()));
+                  return showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoAlertDialog(
+                          title: Text('Remove $nameTitle?'),
+                          actions: [
+                            CupertinoDialogAction(
+                              isDestructiveAction: true,
+                              child: Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              isDefaultAction: true,
+                              child: Text('Remove'),
+                              onPressed: () {
+                                _deleteNote(nameTitle);
+                                Navigator.of(context).pop();
+                                Navigator.push(context,
+                                  new MaterialPageRoute(builder: (context) => new Notes()));
+                              },
+                            )
+                          ],
+                        );
+                      });
                 },
-                child: Icon(Icons.cancel),
+                child: Icon(Icons.delete),
               ),
             )
           ],

@@ -12,7 +12,7 @@ class SingleNote extends StatelessWidget {
         title: GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (context) => new Editor('')));
+                  new MaterialPageRoute(builder: (context) => new Editor('', nameNote)));
             },
             child: Container(
                 padding: EdgeInsets.all(20.0),
@@ -21,7 +21,7 @@ class SingleNote extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.lightBlue[200],
                     border: Border.all(width: 2.0, color: Colors.blue[200])),
-                child: Text(nameNote,
-                    style: TextStyle(fontWeight: FontWeight.bold)))));
+                child: Text(nameNote, style: TextStyle(fontWeight: FontWeight.bold)),
+                    )));
   }
 }

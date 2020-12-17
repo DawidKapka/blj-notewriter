@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import './single_note.dart';
 
 class NotesList extends StatelessWidget {
-  final List<Widget> notes, name;
-  NotesList(this.notes, this.name);
-  
+  final List<String> notes;
+  NotesList(this.notes);
+
   @override
   Widget build(BuildContext context) {
-    print(name);
-    return Column(children: notes.map((element) => SingleNote(name.toString())).toList());
+    return Column(
+        children: notes.map((element) => SingleNote(element)).toList());
   }
 }

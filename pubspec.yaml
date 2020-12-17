@@ -30,9 +30,10 @@ dependencies:
   image_picker: ^0.6.7+14
   path_provider: ^1.6.24
   http: ^0.12.2
-  csv: ^4.1.0
+  path: ^1.7.0
   device_info: ^1.0.0
   mysql1: ^0.17.1
+  dio: ^3.0.10
 
 
 dev_dependencies:
