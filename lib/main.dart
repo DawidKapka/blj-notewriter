@@ -50,19 +50,21 @@ class _LandingScreenState extends State<LandingScreen> {
     }
   }
 
-  String url = 'http://127.0.0.1:5000';
+  String url = 'http://139.162.146.78';
+  TextEditingController nameController = TextEditingController();
 
   Future<void> _uploadImage(File imageFile) async {
-    Uri filePath = Uri.parse(imageFile.path);
-    var uri = Uri.parse(url);
-    var request = new http.MultipartRequest("POST", uri);
-    request.files.add(new http.MultipartFile.fromBytes(
-        'file', await File.fromUri(filePath).readAsBytes(),
-        contentType: new MediaType('image', 'jpg')));
+    final uri = Uri.parse("");
+    var request = http.MultipartRequest('POST', uri);
+    request.fields['name'] = nameController.text;
+    var pic = await http.MultipartFile.fromPath("image", imageFile.path);
+    var response = await request.send();
 
-    request.send().then((response) {
-      if (response.statusCode == 200) print("Uploaded!");
-    });
+    if (response.statusCode == 200) {
+      print("Image Uploaded");
+    } else {
+      print("Image Not Uploaded");
+    }
   }
 
   String _response = null;
