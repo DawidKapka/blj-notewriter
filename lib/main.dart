@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:notewriter_app/loading.dart';
 
 import './note_editor.dart';
@@ -25,6 +26,8 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  
+  bool connection = false;
   bool loading = false;
   String deviceID;
   String url = 'http://139.162.146.78';
@@ -119,6 +122,33 @@ class _LandingScreenState extends State<LandingScreen> {
     });
   }
 
+  _checkConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        connection = true;
+      }
+    } on SocketException catch (_) {
+      connection = false;
+      return showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: Text('No Internet Connection!'),
+              actions: [
+                CupertinoDialogAction(
+                  child: Text('Close'),
+                  isDestructiveAction: true,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+  }
+
   String _response = null;
 
   Future<void> _getResponse() async {
@@ -165,9 +195,12 @@ class _LandingScreenState extends State<LandingScreen> {
               disabledColor: Colors.grey[400],
               child: Text('Detect Text'),
               onPressed: () {
-                setState(() => loading = true);
-                _uploadImage();
-                _getResponse();
+                _checkConnection();
+                if (connection) {
+                  setState(() => loading = true);
+                  _uploadImage();
+                  _getResponse();
+                }
               }));
     } else {
       return Text('');
@@ -212,9 +245,9 @@ class _LandingScreenState extends State<LandingScreen> {
               appBar: AppBar(title: Text('NoteWriter+')),
               drawer: NavBar(),
               body: Scrollbar(
-                child: Container(
-                  child: Center(
-                      child: Column(children: <Widget>[
+                  child: Container(
+                      child: Center(
+                          child: Column(children: <Widget>[
                 _checkImage(),
                 _isImageLoaded()
               ])))),

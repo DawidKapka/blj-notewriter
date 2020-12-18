@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:notewriter_app/main.dart';
 import './notes.dart';
+import './settings.dart';
 
 class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Drawer(
         child: ListView(children: [
       DrawerHeader(
@@ -19,19 +19,24 @@ class NavBar extends StatelessWidget {
           title: Text('Select Photo'),
           onTap: () {
             Navigator.push(
-              context, 
-              new MaterialPageRoute(builder: (context) => new LandingScreen())
-            );
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new LandingScreen()));
           }),
       ListTile(
           trailing: Icon(Icons.book),
           title: Text('My Notes'),
           onTap: () {
-            Navigator.push(
-              context,
-              new MaterialPageRoute(builder: (context) => new Notes())
-            );
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new Notes()));
           }),
+      ListTile(
+          trailing: Icon(Icons.settings),
+          title: Text('Settings'),
+          onTap: () {
+            Navigator.push(context,
+              new MaterialPageRoute(builder: (context) => new Settings()));
+          })
     ]));
   }
 }

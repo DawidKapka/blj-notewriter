@@ -154,9 +154,13 @@ class _EditorState extends State<Editor> {
                               ),
                               CupertinoDialogAction(
                                 onPressed: () {
-                                  if (nameString == '') {
+                                  if (nameController.text == '' ||
+                                      nameController.text == 'New Note') {
                                     _saveNewNote(nameController.text,
                                         noteController.text);
+                                    print('b');
+                                  } else {
+                                    print('a');
                                   }
 
                                   Navigator.of(context).pop();
