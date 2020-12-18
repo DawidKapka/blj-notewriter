@@ -10,13 +10,12 @@ class Loading extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
       appBar: AppBar(title: Text('NoteWriter+')),
-      drawer: NavBar(),
       body: Container(
       color: Colors.white,
-      child: SpinKitFadingCircle(
+      child: Center(child: SpinKitFadingCircle(
         color: Colors.blue,
-        size: 50.0,
+        size: 100.0,
         )
-    )));
+    ))));
   }
 }

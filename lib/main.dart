@@ -39,8 +39,8 @@ class _LandingScreenState extends State<LandingScreen> {
     var picture = await ImagePicker().getImage(
         source: ImageSource.gallery,
         imageQuality: 20,
-        maxHeight: 500,
-        maxWidth: 500);
+        maxHeight: 550,
+        maxWidth: 550);
     this.setState(() {
       imageFile = File(picture.path);
     });
@@ -52,8 +52,8 @@ class _LandingScreenState extends State<LandingScreen> {
     var picture = await ImagePicker().getImage(
         source: ImageSource.camera,
         imageQuality: 20,
-        maxHeight: 500,
-        maxWidth: 500);
+        maxHeight: 550,
+        maxWidth: 550);
     this.setState(() {
       imageFile = File(picture.path);
     });
@@ -211,12 +211,13 @@ class _LandingScreenState extends State<LandingScreen> {
             home: Scaffold(
               appBar: AppBar(title: Text('NoteWriter+')),
               drawer: NavBar(),
-              body: Container(
+              body: Scrollbar(
+                child: Container(
                   child: Center(
                       child: Column(children: <Widget>[
                 _checkImage(),
                 _isImageLoaded()
-              ]))),
+              ])))),
               floatingActionButton: Container(
                   height: 100.0,
                   child: FittedBox(

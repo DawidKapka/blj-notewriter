@@ -46,7 +46,7 @@ class _EditorState extends State<Editor> {
         ['$deviceID', '$nameTitle']);
     for (var row in getNote) {
       if (row != null) {
-        noteController.text = row.toString();
+        noteController.text = row[4].toString();
       }
     }
     //print(deviceID);
