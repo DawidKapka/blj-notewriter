@@ -33,7 +33,7 @@ dependencies:
   path: ^1.7.0
   device_info: ^1.0.0
   mysql1: ^0.17.1
-  dio: ^3.0.10
+  flutter_spinkit: ^4.1.2+1
 
 
 dev_dependencies:

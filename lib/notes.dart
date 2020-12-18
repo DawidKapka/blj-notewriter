@@ -39,8 +39,7 @@ class _NotesState extends State<Notes> {
 
     _getDeviceID();
     var conn = await MySqlConnection.connect(settings);
-    var selectNotes = await conn
-        .query('SELECT * FROM notes WHERE device_id = ?', ['$deviceID']);
+    var selectNotes = await conn.query('SELECT * FROM notes WHERE device_id = ?', ['$deviceID']);
     for (var row in selectNotes) {
       setState(() {
         _notes.add(row[2].toString());

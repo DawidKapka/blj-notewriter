@@ -16,7 +16,7 @@ class Editor extends StatefulWidget {
 }
 
 class _EditorState extends State<Editor> {
-  String _response = '';
+  String _response;
   String nameTitle;
   _EditorState(this._response, this.nameTitle);
 
@@ -33,10 +33,31 @@ class _EditorState extends State<Editor> {
         ['$deviceID', '$nameTitle']);
   }
 
+  Future<void> _getNote() async {
+    var settings = new ConnectionSettings(
+        host: 'mysql2.webland.ch',
+        user: 'd041e_dakapka',
+        password: '12345_Db!!!',
+        db: 'd041e_dakapka');
+    var conn = await MySqlConnection.connect(settings);
+    _getDeviceID();
+    var getNote = await conn.query(
+        'SELECT * FROM notes WHERE device_id = ? AND title = ?',
+        ['$deviceID', '$nameTitle']);
+    for (var row in getNote) {
+      if (row != null) {
+        noteController.text = row.toString();
+      }
+    }
+    //print(deviceID);
+    //print(nameTitle);
+    //print(getNote);
+  }
+
   final nameController = TextEditingController();
   final noteController = TextEditingController();
   String nameString = '';
-  var deviceID = '';
+  String deviceID = '';
   Future<void> _getDeviceID() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
@@ -99,6 +120,9 @@ class _EditorState extends State<Editor> {
   }
 
   Widget build(BuildContext context) {
+    setState(() {
+      _getNote();
+    });
     noteController.text = _response;
     return new Scaffold(
         appBar: new AppBar(
@@ -173,8 +197,10 @@ class _EditorState extends State<Editor> {
                               onPressed: () {
                                 _deleteNote(nameTitle);
                                 Navigator.of(context).pop();
-                                Navigator.push(context,
-                                  new MaterialPageRoute(builder: (context) => new Notes()));
+                                Navigator.push(
+                                    context,
+                                    new MaterialPageRoute(
+                                        builder: (context) => new Notes()));
                               },
                             )
                           ],

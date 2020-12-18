@@ -1,15 +1,19 @@
+import 'dart:convert';
+
+import 'package:notewriter_app/loading.dart';
+
 import './note_editor.dart';
 import './navbar.dart';
 import './notes.dart';
+import './loading.dart';
 
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart';
+import 'package:device_info/device_info.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 Future<Null> main() async {
   runApp(MaterialApp(home: LandingScreen()));
@@ -21,22 +25,39 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  bool loading = false;
+  String deviceID;
+  String url = 'http://139.162.146.78';
+  TextEditingController nameController = TextEditingController();
   File imageFile;
-  Dio dio = new Dio();
+  String status = '';
+  String base64Image;
+  File tempFile;
+  String error = 'Error';
 
   _openGallery() async {
-    var picture = await ImagePicker().getImage(source: ImageSource.gallery);
+    var picture = await ImagePicker().getImage(
+        source: ImageSource.gallery,
+        imageQuality: 20,
+        maxHeight: 500,
+        maxWidth: 500);
     this.setState(() {
       imageFile = File(picture.path);
     });
+    _setStatus('');
     Navigator.of(context);
   }
 
   _openCamera() async {
-    var picture = await ImagePicker().getImage(source: ImageSource.camera);
+    var picture = await ImagePicker().getImage(
+        source: ImageSource.camera,
+        imageQuality: 20,
+        maxHeight: 500,
+        maxWidth: 500);
     this.setState(() {
       imageFile = File(picture.path);
     });
+    _setStatus('');
     Navigator.of(context);
   }
 
@@ -45,26 +66,57 @@ class _LandingScreenState extends State<LandingScreen> {
       return Container(
           margin: EdgeInsets.all(10.0), child: Text('No Image Selected'));
     } else {
-      _uploadImage(imageFile);
-      return Image.file(imageFile, height: 500);
+      return Column(children: [
+        FutureBuilder<File>(
+            builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+          if (null != imageFile) {
+            tempFile = imageFile;
+            base64Image = base64Encode(imageFile.readAsBytesSync());
+
+            return Image.file(imageFile);
+          } else if (null != snapshot.error) {
+            return Text('Error');
+          } else {
+            return Container(child: Image.file(imageFile));
+          }
+        }),
+        Container(
+          padding: EdgeInsets.all(2.0),
+          child: Text(
+            'The Image Quality had been \nreduced to improve Performance',
+            style: TextStyle(fontStyle: FontStyle.italic),
+            textAlign: TextAlign.center,
+          ),
+        )
+      ]);
     }
   }
 
-  String url = 'http://139.162.146.78';
-  TextEditingController nameController = TextEditingController();
+  _setStatus(String message) {
+    setState(() {
+      status = message;
+    });
+  }
 
-  Future<void> _uploadImage(File imageFile) async {
-    final uri = Uri.parse("");
-    var request = http.MultipartRequest('POST', uri);
-    request.fields['name'] = nameController.text;
-    var pic = await http.MultipartFile.fromPath("image", imageFile.path);
-    var response = await request.send();
-
-    if (response.statusCode == 200) {
-      print("Image Uploaded");
-    } else {
-      print("Image Not Uploaded");
+  _uploadImage() {
+    if (null == tempFile) {
+      _setStatus(error);
+      return;
     }
+    String fileName = 'image.jpg';
+    upload(fileName);
+  }
+
+  upload(String fileName) {
+    http.post('http://www.041er-blj.ch/2020/dakapka/notewriter/db_upload.php',
+        body: {
+          "image": base64Image,
+          "name": fileName,
+        }).then((result) {
+      _setStatus(result.statusCode == 200 ? result.body : error);
+    }).catchError((error) {
+      _setStatus(error);
+    });
   }
 
   String _response = null;
@@ -85,12 +137,14 @@ class _LandingScreenState extends State<LandingScreen> {
                   isDestructiveAction: true,
                   child: Text('Delete'),
                   onPressed: () {
+                    setState(() => loading = false);
                     Navigator.of(context).pop();
                   }),
               CupertinoDialogAction(
                   isDefaultAction: true,
                   child: Text('Keep'),
                   onPressed: () {
+                    setState(() => loading = false);
                     Navigator.push(
                         context,
                         new MaterialPageRoute(
@@ -111,6 +165,8 @@ class _LandingScreenState extends State<LandingScreen> {
               disabledColor: Colors.grey[400],
               child: Text('Detect Text'),
               onPressed: () {
+                setState(() => loading = true);
+                _uploadImage();
                 _getResponse();
               }));
     } else {
@@ -149,24 +205,29 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('NoteWriter+')),
-        drawer: NavBar(),
-        body: Container(
-            child: Center(
-                child: Column(
-                    children: <Widget>[_checkImage(), _isImageLoaded()]))),
-        floatingActionButton: Container(
-            height: 100.0,
-            child: FittedBox(
-                child: FloatingActionButton(
-                    child: Icon(Icons.perm_media_outlined),
-                    onPressed: () {
-                      _showChoiceDialog(context);
-                    }))),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      ),
-    );
+    return loading
+        ? Loading()
+        : MaterialApp(
+            home: Scaffold(
+              appBar: AppBar(title: Text('NoteWriter+')),
+              drawer: NavBar(),
+              body: Container(
+                  child: Center(
+                      child: Column(children: <Widget>[
+                _checkImage(),
+                _isImageLoaded()
+              ]))),
+              floatingActionButton: Container(
+                  height: 100.0,
+                  child: FittedBox(
+                      child: FloatingActionButton(
+                          child: Icon(Icons.perm_media_outlined),
+                          onPressed: () {
+                            _showChoiceDialog(context);
+                          }))),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+            ),
+          );
   }
 }
