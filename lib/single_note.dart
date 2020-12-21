@@ -8,11 +8,22 @@ import 'dart:io';
 
 import './note_editor.dart';
 
-class SingleNote extends StatelessWidget {
+class SingleNote extends StatefulWidget {
   final String nameNote;
   SingleNote(this.nameNote);
+
   @override
-  String noteText;
+  _SingleNoteState createState() => _SingleNoteState(nameNote);
+}
+
+class _SingleNoteState extends State<SingleNote> {
+  final String nameNote;
+  _SingleNoteState(this.nameNote);
+  @override
+  String noteText = '';
+
+  String noteDate = '';
+
   String deviceID;
 
   Future<void> _getDeviceID() async {
@@ -26,24 +37,58 @@ class SingleNote extends StatelessWidget {
     }
   }
 
+  _getNoteValue(String nameNote) async {
+    var settings = new ConnectionSettings(
+        host: 'mysql2.webland.ch',
+        user: 'd041e_dakapka',
+        password: '12345_Db!!!',
+        db: 'd041e_dakapka');
+    _getDeviceID();
+    var conn = await MySqlConnection.connect(settings);
+    var getText = await conn.query(
+        'SELECT * FROM notes WHERE device_id = ? AND title = ?',
+        ['$deviceID', '$nameNote']);
+    for (var row in getText) {
+      noteText = row[4];
+    }
+  }
+
   Widget build(BuildContext context) {
+    setState(() {
+      _getNoteValue(nameNote);
+      if (noteText.length > 20) {
+        noteText = noteText.substring(0, 19);
+        noteText += '...';
+      }
+    });
     return ListTile(
-            title: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => new Editor('', nameNote)));
-                },
-                child: Container(
-                  padding: EdgeInsets.all(20.0),
-                  margin: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.lightBlue[200],
-                      border: Border.all(width: 2.0, color: Colors.blue[200])),
-                  child: Text(nameNote,
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                )));
+        title: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new Editor('', widget.nameNote)));
+            },
+            child: Container(
+              padding: EdgeInsets.all(20.0),
+              margin: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.lightBlue[200],
+                  border: Border.all(width: 2.0, color: Colors.blue[200])),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: Text(widget.nameNote,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18))),
+                    Text(noteText,
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey[700])),
+                  ]),
+            )));
   }
 }

@@ -1,11 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
-import 'package:notewriter_app/loading.dart';
-
 import './note_editor.dart';
 import './navbar.dart';
-import './notes.dart';
 import './loading.dart';
 
 import 'dart:io';
@@ -13,8 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:device_info/device_info.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'dart:convert';
 
 Future<Null> main() async {
   runApp(MaterialApp(home: LandingScreen()));
@@ -26,7 +19,6 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  
   bool connection = false;
   bool loading = false;
   String deviceID;
@@ -76,7 +68,11 @@ class _LandingScreenState extends State<LandingScreen> {
             tempFile = imageFile;
             base64Image = base64Encode(imageFile.readAsBytesSync());
 
-            return Image.file(imageFile, width: 500, height: 500,);
+            return Image.file(
+              imageFile,
+              width: 500,
+              height: 500,
+            );
           } else if (null != snapshot.error) {
             return Text('Error');
           }
@@ -193,6 +189,8 @@ class _LandingScreenState extends State<LandingScreen> {
               disabledColor: Colors.grey[400],
               child: Text('Detect Text'),
               onPressed: () {
+                setState(() {
+                });
                 _checkConnection();
                 if (connection) {
                   setState(() => loading = true);
@@ -239,8 +237,6 @@ class _LandingScreenState extends State<LandingScreen> {
     return loading
         ? Loading()
         : MaterialApp(
-          theme: ThemeData(),
-          darkTheme: ThemeData.dark(),
             home: Scaffold(
               appBar: AppBar(title: Text('NoteWriter+')),
               drawer: NavBar(),
