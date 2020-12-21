@@ -239,6 +239,8 @@ class _LandingScreenState extends State<LandingScreen> {
     return loading
         ? Loading()
         : MaterialApp(
+          theme: ThemeData(),
+          darkTheme: ThemeData.dark(),
             home: Scaffold(
               appBar: AppBar(title: Text('NoteWriter+')),
               drawer: NavBar(),

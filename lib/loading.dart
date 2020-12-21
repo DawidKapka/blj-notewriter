@@ -9,7 +9,7 @@ class Loading extends StatelessWidget {
     // TODO: implement build
     return MaterialApp(
       home: Scaffold(
-      appBar: AppBar(title: Text('NoteWriter+')),
+      appBar: AppBar(title: Text('Loading...')),
       body: Container(
       color: Colors.white,
       child: Center(child: SpinKitFadingCircle(
