@@ -42,8 +42,8 @@ class _LandingScreenState extends State<LandingScreen> {
     var picture = await ImagePicker().getImage(
         source: ImageSource.gallery,
         imageQuality: 20,
-        maxHeight: 550,
-        maxWidth: 550);
+        maxHeight: 800,
+        maxWidth: 800);
     this.setState(() {
       imageFile = File(picture.path);
     });
@@ -55,8 +55,8 @@ class _LandingScreenState extends State<LandingScreen> {
     var picture = await ImagePicker().getImage(
         source: ImageSource.camera,
         imageQuality: 20,
-        maxHeight: 550,
-        maxWidth: 550);
+        maxHeight: 750,
+        maxWidth: 750);
     this.setState(() {
       imageFile = File(picture.path);
     });
@@ -76,11 +76,9 @@ class _LandingScreenState extends State<LandingScreen> {
             tempFile = imageFile;
             base64Image = base64Encode(imageFile.readAsBytesSync());
 
-            return Image.file(imageFile);
+            return Image.file(imageFile, width: 500, height: 500,);
           } else if (null != snapshot.error) {
             return Text('Error');
-          } else {
-            return Container(child: Image.file(imageFile));
           }
         }),
         Container(

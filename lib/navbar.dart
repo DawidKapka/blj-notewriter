@@ -31,11 +31,11 @@ class NavBar extends StatelessWidget {
                 new MaterialPageRoute(builder: (context) => new Notes()));
           }),
       ListTile(
-          trailing: Icon(Icons.settings),
-          title: Text('Settings'),
+          trailing: Icon(Icons.settings, color: Colors.grey,),
+          title: Text('Settings', style: TextStyle(color: Colors.grey),),
           onTap: () {
-            Navigator.push(context,
-              new MaterialPageRoute(builder: (context) => new Settings()));
+            //Navigator.push(context,
+              //new MaterialPageRoute(builder: (context) => new Settings()));
           })
     ]));
   }
