@@ -1,6 +1,8 @@
 import './note_editor.dart';
 import './navbar.dart';
 import './loading.dart';
+import './notes.dart';
+import './constants.dart';
 
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:path_provider/path_provider.dart';
 
 Future<Null> main() async {
   runApp(MaterialApp(home: LandingScreen()));
@@ -29,6 +32,27 @@ class _LandingScreenState extends State<LandingScreen> {
   String base64Image;
   File tempFile;
   String error = 'Error';
+
+  Future<String> _getFilePath() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+    String filePath = '$appDocumentsPath/theme.csv';
+    return filePath;
+  }
+
+  void _loadTheme() async {
+    File themeFile = File(await _getFilePath());
+    String theme = await themeFile.readAsString();
+    if (theme == 'dark') {
+      setState(() {
+        darkMode = true;
+      });
+    } else {
+      setState(() {
+        darkMode = false;
+      });
+    }
+  }
 
   _openGallery() async {
     var picture = await ImagePicker().getImage(
@@ -101,6 +125,7 @@ class _LandingScreenState extends State<LandingScreen> {
       return;
     }
     String fileName = 'image.jpg';
+    _deleteOldImg(fileName);
     upload(fileName);
   }
 
@@ -180,6 +205,18 @@ class _LandingScreenState extends State<LandingScreen> {
         });
   }
 
+  Future<void> _deleteOldImg(String fileName) async {
+    http
+        .delete(
+      'http://www.041er-blj.ch/2020/dakapka/notewriter/image.jpg',
+    )
+        .then((result) {
+      _setStatus(result.statusCode == 200 ? result.body : error);
+    }).catchError((error) {
+      _setStatus(error);
+    });
+  }
+
   _isImageLoaded() {
     if (imageFile != null) {
       return Container(
@@ -189,8 +226,6 @@ class _LandingScreenState extends State<LandingScreen> {
               disabledColor: Colors.grey[400],
               child: Text('Detect Text'),
               onPressed: () {
-                setState(() {
-                });
                 _checkConnection();
                 if (connection) {
                   setState(() => loading = true);
@@ -234,11 +269,15 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      _loadTheme();
+    });
     return loading
         ? Loading()
         : MaterialApp(
+            theme: darkMode ? ThemeData.dark() : ThemeData(),
             home: Scaffold(
-              appBar: AppBar(title: Text('NoteWriter+')),
+              appBar: AppBar(title: Text('Select Photo')),
               drawer: NavBar(),
               body: Scrollbar(
                   child: Container(
@@ -251,7 +290,12 @@ class _LandingScreenState extends State<LandingScreen> {
                   height: 100.0,
                   child: FittedBox(
                       child: FloatingActionButton(
-                          child: Icon(Icons.perm_media_outlined),
+                          backgroundColor:
+                              darkMode ? Colors.grey[700] : Colors.blue[400],
+                          child: Icon(
+                            Icons.perm_media_outlined,
+                            color: Colors.white,
+                          ),
                           onPressed: () {
                             _showChoiceDialog(context);
                           }))),

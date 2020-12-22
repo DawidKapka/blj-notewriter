@@ -98,6 +98,7 @@ class _EditorState extends State<Editor> {
     var insert = await conn.query(
         'INSERT INTO notes (device_id, title, created_at, text_value) VALUES (?, ?, ?, ?)',
         ['$deviceID', '$name', '$date', '$note']);
+    conn.close();
   }
 
   void _updateNote(String noteController) async {
@@ -106,6 +107,7 @@ class _EditorState extends State<Editor> {
     var update = await conn.query(
         'UPDATE notes SET text_value = ? WHERE device_id = ? AND title = ?',
         ['$noteController', '$deviceID', '$nameTitle']);
+    conn.close();
   }
 
   Future<void> _getNoteName() async {
@@ -139,6 +141,7 @@ class _EditorState extends State<Editor> {
         }
       }
     }
+    conn.close();
   }
 
   Widget build(BuildContext context) {
@@ -168,7 +171,8 @@ class _EditorState extends State<Editor> {
                                 content: CupertinoTextField(
                                   autofocus: true,
                                   controller: nameController,
-                                  autocorrect: false,
+                                  placeholder: 'New Note',
+                                  autocorrect: true,
                                   maxLines: 1,
                                   maxLength: 50,
                                 ),
@@ -202,15 +206,15 @@ class _EditorState extends State<Editor> {
                         Navigator.of(context).pop();
                       }
                       return showCupertinoDialog(
-                        context: context,
-                        builder: (context) {
-                          Future.delayed(Duration(milliseconds: 500), () {
-                            Navigator.of(context).pop();
+                          context: context,
+                          builder: (context) {
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              Navigator.of(context).pop();
+                            });
+                            return CupertinoAlertDialog(
+                              title: Text('Saved!'),
+                            );
                           });
-                          return CupertinoAlertDialog(
-                            title: Text('Saved!'),
-                          );
-                        });
                     }
                   },
                   child: Icon(Icons.save),

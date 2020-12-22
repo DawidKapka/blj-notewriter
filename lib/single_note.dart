@@ -7,6 +7,7 @@ import 'package:device_info/device_info.dart';
 import 'dart:io';
 
 import './note_editor.dart';
+import './constants.dart';
 
 class SingleNote extends StatefulWidget {
   final String nameNote;
@@ -21,7 +22,7 @@ class _SingleNoteState extends State<SingleNote> {
   _SingleNoteState(this.nameNote);
   @override
   String noteText = '';
-
+  bool showAll = false;
   String noteDate = '';
 
   String deviceID;
@@ -51,18 +52,23 @@ class _SingleNoteState extends State<SingleNote> {
     for (var row in getText) {
       noteText = row[4];
     }
+    conn.close();
   }
 
   Widget build(BuildContext context) {
-    setState(() {
-      _getNoteValue(nameNote);
-      if (noteText.length > 20) {
-        noteText = noteText.substring(0, 19);
-        noteText += '...';
-      }
-    });
+    _getNoteValue(nameNote);
     return ListTile(
         title: GestureDetector(
+            onLongPressEnd: (void press) {
+              setState(() {
+                showAll = false;
+              });
+            },
+            onLongPress: () {
+              setState(() {
+                showAll = true;
+              });
+            },
             onTap: () {
               Navigator.push(
                   context,
@@ -74,20 +80,25 @@ class _SingleNoteState extends State<SingleNote> {
               margin: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.lightBlue[200],
-                  border: Border.all(width: 2.0, color: Colors.blue[200])),
+                  color: darkMode ? Colors.grey[700] : Colors.lightBlue[200],
+                  border: Border.all(width: 2.0, color: darkMode ? Colors.grey[700] : Colors.lightBlue[200])),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                         padding: EdgeInsets.only(bottom: 10.0),
-                        child: Text(widget.nameNote,
+                        child: Center(child: Text(widget.nameNote,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18))),
-                    Text(noteText,
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: Colors.grey[700])),
+                                fontWeight: FontWeight.bold, fontSize: 18)))),
+                    showAll
+                        ? Text(noteText,
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: Colors.grey[700]))
+                        : Text(
+                            '',
+                            style: TextStyle(fontSize: 0),
+                          ),
                   ]),
             )));
   }
