@@ -40,8 +40,8 @@ class _SettingsState extends State<Settings> {
                       child: CupertinoButton(
                         color: darkMode ? Colors.grey[700] : Colors.blue,
                         child: darkMode
-                            ? Text('Switch to Light Mode')
-                            : Text('Switch to Dark Mode'),
+                            ? Text('Switch to Light Theme')
+                            : Text('Switch to Dark Theme'),
                         onPressed: () {
                           setState(() {
                             if (darkMode == false) {
