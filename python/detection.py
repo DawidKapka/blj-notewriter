@@ -1,4 +1,5 @@
 import easyocr
+import time
 from flask import Flask
 import requests
 import os
@@ -10,6 +11,7 @@ app = Flask(__name__)
 @app.route('/')
 def detectImage():
     try:
+        time.sleep(0.5)
         ImageFile.LOAD_TRUNCATED_IMAGES = True
         PIC_PATH = 'image_for_detection/image.jpg'
 
@@ -28,6 +30,7 @@ def detectImage():
         for word in result:
             result_string += word + ' '
         print(result_string)
+        os.remove('image_for_detection/image.jpg')
         return result_string
     except:
         return 'Oops! Seems like there was an Error.\nPlease Try again.'
