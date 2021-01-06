@@ -33,6 +33,7 @@ class _EditorState extends State<Editor> {
     var deleteNote = await conn.query(
         'DELETE FROM notes WHERE device_id = ? AND title = ?',
         ['$deviceID', '$nameTitle']);
+    conn.close();
   }
 
   Future<void> _getNote() async {
@@ -49,11 +50,11 @@ class _EditorState extends State<Editor> {
     for (var row in getNote) {
       if (row != null) {
         noteController.text = row[4].toString();
+      } else {
+        noteController.text = '';
       }
     }
-    //print(deviceID);
-    //print(nameTitle);
-    //print(getNote);
+    conn.close();
   }
 
   final nameController = TextEditingController();
@@ -227,7 +228,7 @@ class _EditorState extends State<Editor> {
                       context: context,
                       builder: (BuildContext context) {
                         return CupertinoAlertDialog(
-                          title: Text('Remove $nameTitle?'),
+                          title: Text('Remove "$nameTitle?"'),
                           actions: [
                             CupertinoDialogAction(
                               isDestructiveAction: true,

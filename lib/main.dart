@@ -32,6 +32,7 @@ class _LandingScreenState extends State<LandingScreen> {
   String base64Image;
   File tempFile;
   String error = 'Error';
+  String detectedText = 'Detected Text:';
 
   Future<String> _getFilePath() async {
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
@@ -171,38 +172,46 @@ class _LandingScreenState extends State<LandingScreen> {
   String _response = null;
 
   Future<void> _getResponse() async {
-    var response = await http.get(Uri.encodeFull(url));
-    setState(() {
-      _response = response.body.toString();
+    try {
+      var response = await http.get(Uri.encodeFull(url));
+      setState(() {
+        _response = response.body.toString();
+      });
+    } catch (e) {
+      detectedText = 'Error';
+      _response = 'Oops! Seems like there was an Error. Please try Again.';
+    }
+
+    return new Future.sync(() {
+      return showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: Text(detectedText),
+              content: Text(_response),
+              actions: [
+                CupertinoDialogAction(
+                    isDestructiveAction: true,
+                    child: Text('Delete'),
+                    onPressed: () {
+                      setState(() => loading = false);
+                      Navigator.of(context).pop();
+                    }),
+                CupertinoDialogAction(
+                    isDefaultAction: true,
+                    child: Text('Keep'),
+                    onPressed: () {
+                      setState(() => loading = false);
+                      Navigator.push(
+                          context,
+                          new MaterialPageRoute(
+                              builder: (context) =>
+                                  new Editor(_response, 'New Note')));
+                    })
+              ],
+            );
+          });
     });
-    return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: Text('Detected Text:'),
-            content: Text(_response),
-            actions: [
-              CupertinoDialogAction(
-                  isDestructiveAction: true,
-                  child: Text('Delete'),
-                  onPressed: () {
-                    setState(() => loading = false);
-                    Navigator.of(context).pop();
-                  }),
-              CupertinoDialogAction(
-                  isDefaultAction: true,
-                  child: Text('Keep'),
-                  onPressed: () {
-                    setState(() => loading = false);
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) =>
-                                new Editor(_response, 'New Note')));
-                  })
-            ],
-          );
-        });
   }
 
   Future<void> _deleteOldImg(String fileName) async {

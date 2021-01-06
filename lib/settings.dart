@@ -16,7 +16,6 @@ class _SettingsState extends State<Settings> {
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
     String appDocumentsPath = appDocumentsDirectory.path;
     String filePath = '$appDocumentsPath/theme.csv';
-    
     return filePath;
   }
 

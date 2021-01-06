@@ -22,9 +22,8 @@ class _SingleNoteState extends State<SingleNote> {
   _SingleNoteState(this.nameNote);
   @override
   String noteText = '';
-  bool showAll = false;
   String noteDate = '';
-
+  bool showAll = false;
   String deviceID;
 
   Future<void> _getDeviceID() async {
@@ -49,8 +48,15 @@ class _SingleNoteState extends State<SingleNote> {
     var getText = await conn.query(
         'SELECT * FROM notes WHERE device_id = ? AND title = ?',
         ['$deviceID', '$nameNote']);
-    for (var row in getText) {
-      noteText = row[4];
+    if (getText != null) {
+      for (var row in getText) {
+        noteText = row[4];
+        print(row[3]);
+        var date = row[3].toString();
+        print(date);
+        noteDate = "Last Saved: $date";
+        print(noteDate);
+      }
     }
     conn.close();
   }
@@ -79,22 +85,40 @@ class _SingleNoteState extends State<SingleNote> {
               padding: EdgeInsets.all(20.0),
               margin: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
+                  boxShadow: showAll
+                      ? [
+                          BoxShadow(
+                              color: darkMode
+                                  ? Colors.grey[900]
+                                  : Colors.grey[300],
+                              spreadRadius: 5,
+                              blurRadius: 5,
+                              offset: Offset(0, 3))
+                        ]
+                      : null,
                   borderRadius: BorderRadius.circular(10),
                   color: darkMode ? Colors.grey[700] : Colors.lightBlue[200],
-                  border: Border.all(width: 2.0, color: darkMode ? Colors.grey[700] : Colors.lightBlue[200])),
+                  border: Border.all(
+                      width: 2.0,
+                      color:
+                          darkMode ? Colors.grey[700] : Colors.lightBlue[200])),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                         padding: EdgeInsets.only(bottom: 10.0),
-                        child: Center(child: Text(widget.nameNote,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18)))),
+                        child: Center(
+                            child: Text(widget.nameNote,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18)))),
                     showAll
-                        ? Text(noteText,
+                        ? Text("$noteDate $noteText",
                             style: TextStyle(
                                 fontStyle: FontStyle.italic,
-                                color: Colors.grey[700]))
+                                color: darkMode
+                                    ? Colors.white60
+                                    : Colors.grey[700]))
                         : Text(
                             '',
                             style: TextStyle(fontSize: 0),
