@@ -42,16 +42,19 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   void _loadTheme() async {
-    File themeFile = File(await _getFilePath());
-    String theme = await themeFile.readAsString();
-    if (theme == 'dark') {
-      setState(() {
-        darkMode = true;
-      });
-    } else {
-      setState(() {
-        darkMode = false;
-      });
+    String path = await _getFilePath();
+    if (File(path).exists() == true) {
+      File themeFile = File(await _getFilePath());
+      String theme = await themeFile.readAsString();
+      if (theme == 'dark') {
+        setState(() {
+          darkMode = true;
+        });
+      } else {
+        setState(() {
+          darkMode = false;
+        });
+      }
     }
   }
 
@@ -180,6 +183,7 @@ class _LandingScreenState extends State<LandingScreen> {
     } catch (e) {
       detectedText = 'Error';
       _response = 'Oops! Seems like there was an Error. Please try Again.';
+      print(e);
     }
 
     return new Future.sync(() {

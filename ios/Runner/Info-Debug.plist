@@ -8,6 +8,15 @@
 	<string>${PRODUCT_NAME} PhotoLibrary Usage</string>
 	<key>NSVideoSubscriberAccountUsageDescription</key>
 	<string>${PRODUCT_NAME} Video Subscribe Usage</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_dartobservatory._tcp</string>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    	<key>NSAllowsArbitraryLoads</key>
+    	<true/>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
