@@ -43,18 +43,16 @@ class _LandingScreenState extends State<LandingScreen> {
 
   void _loadTheme() async {
     String path = await _getFilePath();
-    if (File(path).exists() == true) {
-      File themeFile = File(await _getFilePath());
-      String theme = await themeFile.readAsString();
-      if (theme == 'dark') {
-        setState(() {
-          darkMode = true;
-        });
-      } else {
-        setState(() {
-          darkMode = false;
-        });
-      }
+    File themeFile = File(await _getFilePath());
+    String theme = await themeFile.readAsString();
+    if (theme == 'dark') {
+      setState(() {
+        darkMode = true;
+      });
+    } else {
+      setState(() {
+        darkMode = false;
+      });
     }
   }
 
