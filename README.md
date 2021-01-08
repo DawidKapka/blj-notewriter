@@ -9,4 +9,4 @@
 
 > Note: This is a Alpha Release. Future releases are planned to use Google ML-Kit to improve speed and make all the calculations local, also making the application not dependend on Internet Connection.
 
-###### Install Flutter from [Here](https://flutter.dev) or through the [Github Repository](https://github.com/flutter/flutter)
+###### Downlaod Flutter [Here](https://flutter.dev) or through the [Github Repository](https://github.com/flutter/flutter)
